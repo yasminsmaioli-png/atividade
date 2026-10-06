@@ -1,203 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Jogo</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js" defer></script>
 
-        body {
-            margin: 0;
-            background: #222;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        h1 {
-            color: white;
-        }
-
-        #jogo {
-            width: 800px;
-            height: 400px;
-            max-width: 95%;
-            background: #87ceeb;
-            border: 4px solid white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #chao {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            background: #4caf50;
-        }
-
-        #jogador {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: red;
-            bottom: 60px;
-            left: 100px;
-            border-radius: 5px;
-        }
-
-        #obstaculo {
-            position: absolute;
-            width: 40px;
-            height: 60px;
-            background: #333;
-            bottom: 60px;
-            right: -40px;
-        }
-
-        #pontuacao {
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        #mensagem {
-            color: white;
-            font-size: 20px;
-            margin-top: 15px;
-        }
-    </style>
+    <title>Mario Jump</title>
 </head>
-
 <body>
 
-    <h1>Meu Jogo</h1>
-
-    <div id="jogo">
-
-        <div id="pontuacao">Pontos: 0</div>
-
-        <div id="jogador"></div>
-
-        <div id="obstaculo"></div>
-
-        <div id="chao"></div>
-
-    </div>
-
-    <div id="mensagem">
-        Aperte ESPAÇO para pular!
-    </div>
-
-    <script>
-
-        const jogador = document.getElementById("jogador");
-        const obstaculo = document.getElementById("obstaculo");
-        const pontuacaoTexto = document.getElementById("pontuacao");
-        const mensagem = document.getElementById("mensagem");
-
-        let pulando = false;
-        let jogoRodando = true;
-        let pontos = 0;
-
-        // PULO
-        document.addEventListener("keydown", function(event) {
-
-            if (event.code === "Space" && !pulando && jogoRodando) {
-
-                pulando = true;
-
-                let altura = 0;
-
-                const subir = setInterval(function() {
-
-                    altura += 5;
-                    jogador.style.bottom = (60 + altura) + "px";
-
-                    if (altura >= 150) {
-
-                        clearInterval(subir);
-
-                        const descer = setInterval(function() {
-
-                            altura -= 5;
-                            jogador.style.bottom = (60 + altura) + "px";
-
-                            if (altura <= 0) {
-
-                                clearInterval(descer);
-
-                                jogador.style.bottom = "60px";
-                                pulando = false;
-                            }
-
-                        }, 20);
-                    }
-
-                }, 20);
-            }
-        });
-
-        // MOVIMENTO DO OBSTÁCULO
-        let velocidade = 5;
-
-        const jogo = setInterval(function() {
-
-            if (!jogoRodando) return;
-
-            let posicao = obstaculo.offsetLeft;
-
-            posicao -= velocidade;
-
-            obstaculo.style.left = posicao + "px";
-
-            // Quando o obstáculo sai da tela
-            if (posicao < -40) {
-
-                obstaculo.style.left = "800px";
-
-                pontos++;
-
-                pontuacaoTexto.innerText = "Pontos: " + pontos;
-
-                // Aumenta a dificuldade
-                if (pontos % 5 === 0) {
-                    velocidade++;
-                }
-            }
-
-            // DETECTAR COLISÃO
-            const jogadorRect = jogador.getBoundingClientRect();
-            const obstaculoRect = obstaculo.getBoundingClientRect();
-
-            if (
-                jogadorRect.left < obstaculoRect.right &&
-                jogadorRect.right > obstaculoRect.left &&
-                jogadorRect.top < obstaculoRect.bottom &&
-                jogadorRect.bottom > obstaculoRect.top
-            ) {
-
-                jogoRodando = false;
-
-                mensagem.innerText =
-                    "💥 Game Over! Pontuação: " + pontos +
-                    " — aperte F5 para jogar novamente.";
-
-                obstaculo.style.display = "none";
-            }
-
-        }, 20);
-
-    </script>
+  <div class="game-board">
+    <img src="./images/clouds.png" class = "clouds">
+    <img src="./images/Mario.webp" class="Mario">
+    <img src="./images/pipe.png" class="pipe">
+  </div> 
 
 </body>
 </html>
